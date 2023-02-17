@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+/** 
+ * a random number to the variable n each time it is run 
+ * it is positive when num is > 0
+ * it is negative when num is < 0 
+ * return 0
+ * 
+ */
+
 int main(void)
 {
 int n;
