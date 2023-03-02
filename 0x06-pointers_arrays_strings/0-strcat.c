@@ -1,36 +1,21 @@
-#include <stdio.h>
+#include "main.h"
 
 /**
- * main - appends src to dest
- * 
- * Return: Always 0
+ * *_strcat - concatenates @src to @dest
+ * @src: the source string to append to @dest
+ * @dest: the destiation string to be concatenated upon
+ * Return:pointer to the resulting string
  */
-char *_strcat(char *dest, char *src) {
-  char *dest_end = dest;
 
-  // Find the end of the dest string
-  while (*dest_end != '\0') {
-    dest_end++;
-  }
+char *_strcat(char *dest, char *src)
+{
+	int index = 0;
+	int dest_len = 0;
 
-  // Append the src string to dest
-  while (*src != '\0') {
-    *dest_end = *src;
-    dest_end++;
-    src++;
-  }
-
-  // Add a terminating null byte
-  *dest_end = '\0';
-
-  return dest;
-}
-
-int main() {
-  char dest[20] = "hello";
-  char src[10] = " world";
-
-  printf("%s\n", _strcat(dest, src));  // Output: "hello world"
-  return 0;
+	while (dest[index++])
+		dest_len++;
+	for (index = 0; src[index]; index++)
+		dest[dest_len++] = src[index];
+	return (dest);
 }
 
