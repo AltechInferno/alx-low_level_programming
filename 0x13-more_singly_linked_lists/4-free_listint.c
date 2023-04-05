@@ -1,7 +1,9 @@
 #include "lists.h"
+
 /**
- * free_listint - fee linked list
+ * free_listint - free linked list
  * @head: the pointer to the linked list
+ *
  * Return: nothing
  */
 void free_listint(listint_t *head)
@@ -14,3 +16,4 @@ void free_listint(listint_t *head)
 		free(current);
 	}
 }
+
