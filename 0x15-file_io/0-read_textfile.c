@@ -25,7 +25,8 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	read_bytes = read(file_desc, buffer, letters);
 	write_bytes = write(STDOUT_FILENO, buffer, read_bytes);
 
-	if (file_desc == -1 || read_bytes == -1 || write_bytes == -1 || write_bytes != read_bytes)
+	if (file_desc == -1 || read_bytes == -1 ||
+		write_bytes == -1 || write_bytes != read_bytes)
 	{
 		free(buffer);
 		return (0);
