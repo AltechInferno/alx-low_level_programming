@@ -6,15 +6,19 @@
 #include <stdlib.h>
 
 /**
- * display_version - Prints the version of an ELF header.
- * @ident: A pointer to an array containing the ELF version.
+ * print_version - Prints the version of an ELF header.
+ * @e_ident: A pointer to an array containing the ELF version.
+ *
+ * Description:
+ * This function prints the version of an ELF header, based on the value in the
+ * e_ident array.
  */
-void display_version(unsigned char *ident)
+void print_version(unsigned char *e_ident)
 {
-	printf("  Version Information: %d",
-			ident[EI_VERSION]);
+	printf("  Version:                           %d",
+			e_ident[EI_VERSION]);
 
-	switch (ident[EI_VERSION])
+	switch (e_ident[EI_VERSION])
 	{
 		case EV_CURRENT:
 			printf(" (current)\n");
@@ -26,66 +30,77 @@ void display_version(unsigned char *ident)
 }
 
 /**
- * close_elf_file - Closes an ELF file.
- * @fd: The file descriptor of the ELF file.
+ * close_elf - Closes an ELF file.
+ * @elf: The file descriptor of the ELF file.
+ *
+ * Description:
+ * This function closes an ELF file using the file descriptor passed as an argument.
+ * It prints an error message and exits with a status of 98 if the close operation fails.
  */
-void close_elf_file(int fd)
+void close_elf(int elf)
 {
-	if (close(fd) == -1)
+	if (close(elf) == -1)
 	{
 		dprintf(STDERR_FILENO,
-				"Error: Failed to close file descriptor %d\n", fd);
+				"Error: Can't close fd %d\n", elf);
 		exit(98);
 	}
 }
 
 /**
- * main - Displays the information contained in the
- *	ELF header at the start of an ELF file.
- * @argc: Number of command line arguments.
- * @argv: Array of command line arguments.
+ * main - Entry point for the ELF header information program.
+ * @argc: The number of command-line arguments.
+ * @argv: An array of strings containing the command-line arguments.
  *
- * Return: 0 on success.
+ * Return:
+ * 0 on success.
+ *
+ * Description:
+ * This program displays the information contained in the ELF header at the start of an ELF file.
+ * It takes a file name as a command-line argument and reads the ELF header information from the file.
+ * It then prints various fields of the ELF header using helper functions, and exits with a status of 0.
  */
-int main(__silent int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	Elf64_Ehdr *header;
-	int fd, read_result;
+	int o, r;
 
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
+	o = open(argv[1], O_RDONLY);
+	if (o == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Failed to read file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
+
 	header = malloc(sizeof(Elf64_Ehdr));
 	if (header == NULL)
 	{
-		close_elf_file(fd);
-		dprintf(STDERR_FILENO, "Error: Failed to allocate memory for ELF header\n");
+		close_elf(o);
+		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
 		exit(98);
 	}
-	read_result = read(fd, header, sizeof(Elf64_Ehdr));
-	if (read_result == -1)
+
+	r = read(o, header, sizeof(Elf64_Ehdr));
+	if (r == -1)
 	{
 		free(header);
-		close_elf_file(fd);
-		dprintf(STDERR_FILENO, "Error: `%s`: File not found\n", argv[1]);
+		close_elf(o);
+		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
 		exit(98);
 	}
 
-	check_elf_ident(header->e_ident);
-	printf("ELF Header Information:\n");
-	print_magic_number(header->e_ident);
-	print_class_type(header->e_ident);
-	print_data_encoding(header->e_ident);
-	display_version(header->e_ident);
+	check_elf(header->e_ident);
+	printf("ELF Header:\n");
+	print_magic(header->e_ident);
+	print_class(header->e_ident);
+	print_data(header->e_ident);
+	print_version(header->e_ident);
 	print_osabi(header->e_ident);
-	print_abi_version(header->e_ident);
-	print_file_type(header->e_type, header->e_ident);
-	print_entry_point(header->e_entry, header->e_ident);
+	print_abi(header->e_ident);
+	print_type(header->e_type, header->e_ident);
+	print_entry(header->e_entry, header->e_ident);
 
 	free(header);
-	close_elf_file(fd);
+	close_elf(o);
 	return (0);
 }
