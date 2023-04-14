@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * print_file_contents - reads a text file and prints a specified number of letters
+ * read_textfile - reads a text file and prints a specified number of letters
  * @filename: name of the file to be read
  * @letters: number of letters to be printed
  *
@@ -33,3 +33,4 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	free(buffer);
 	return (bytes_written);
 }
+
