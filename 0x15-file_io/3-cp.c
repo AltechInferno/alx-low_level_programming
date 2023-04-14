@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <stdarg.h> 
+#include <stdarg.h>
 
 #define BUFFER_SIZE 1024
 
@@ -16,8 +16,8 @@
  */
 void error_exit(int exit_code, const char *format, ...)
 {
-	// use vdprintf instead of dprintf
 	va_list args;
+
 	va_start(args, format);
 	vdprintf(STDERR_FILENO, format, args);
 	va_end(args);
