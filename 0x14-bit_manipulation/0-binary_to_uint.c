@@ -2,8 +2,9 @@
 /**
  * binary_to_uint - converts a binary number to an unsigned int
  * @b: binary number as a string
- * Author: Alhassan Abukari Wunpini
- * Return: the converted value, or 0 if invalid characters or b is NULL
+ * Author - Alhassan Abukari Wunpini
+ * School Project - ALX SE
+ * Return: the converted value, 0 if  invalid characters or b is NULL
  */
 unsigned int binary_to_uint(const char *b)
 {
