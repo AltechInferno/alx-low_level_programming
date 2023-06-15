@@ -1,7 +1,7 @@
 #include "lists.h"
 
 /**
-  * dlistint_len - this block returns number of elements in 
+  * dlistint_len - this block returns number of elements in
   * a linked list
   *
   * @h: this is the first node of linked list
@@ -19,4 +19,3 @@ size_t dlistint_len(const dlistint_t *h)
 
 	return (count);
 }
-
